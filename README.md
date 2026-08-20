@@ -1,0 +1,2 @@
+# glowing-guide
+jsDelivr CDN
