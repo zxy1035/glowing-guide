@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!-- 自适应手机平板核心代码 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>SUPER★DRAGON 安利站</title>
+    <style>
+        *{margin: 0;padding: 0;box-sizing: border-box;font-family: "微软雅黑",sans-serif;}
+        body {
+            background-image: url("img/background.jpg");
+            background-size: cover;      /* 铺满屏幕，自动适配手机电脑 */
+            background-position: center; /* 居中 */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        /* 导航栏 */
+        nav {
+            background: rgba(255, 255, 255, 0.25) !important;
+            backdrop-filter: blur(6px);
+            box-shadow:0 1px 5px rgba(0,0,0,0.08) !important;
+            border-bottom: none !important;
+            }
+        nav ul {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding:0 !important;
+            margin:0 !important;
+            list-style:none;
+            gap:24px;
+            }
+        nav ul li {list-style: none;}
+        nav a.active {
+            background: rgba(22, 14, 230, 0.163) !important;
+            border-radius: 8px;
+            }
+        nav a{color: #2d4ede;text-decoration: none;font-family: "微软雅黑",sans-serif;font-weight: bolder;font-size: 16px;padding:12px 6px;}
+        nav a:hover{color: #82b1ff;}
+        /* 音乐播放器 */
+        .music-block{
+            margin:16px 20px;
+            max-width:620px;
+            padding:10px 14px;
+            background:rgba(255,255,255,0.32);
+            backdrop-filter: blur(6px);
+            border-radius:12px;
+            }
+        .music-block .aplayer {border-radius:8px;height:70px;}
+        .music-block .aplayer .aplayer-pic {border-radius:6px;width:50px;height:50px;}
+        .music-block .aplayer .aplayer-info {margin-left:60px;}
+        .aplayer .aplayer-info .aplayer-music {font-size:14px;}
+        .aplayer .aplayer-info .aplayer-author {font-size:12px;opacity:0.8;}
+        :root {
+            --aplayer-theme-color: #2d83de;
+        }
+        @media (max-width: 600px) {
+        .music-block{ max-width:calc(100% - 20px); margin:12px 10px;}
+        .music-block .aplayer {height:62px;}
+        .music-block .aplayer .aplayer-pic {width:42px;height:42px;}
+        }
+        /* 容器统一宽度 */
+        .container{max-width: 1200px;margin: 0 auto;padding: 20px;}
+        section{margin: 40px 0;}
+        h2{color:#0a2463;border-left:5px solid #0a2463;padding-left:10px;margin-bottom:20px;}
+        /* 成员 */
+        .member-box{display: grid;grid-template-columns: repeat(auto-fill,minmax(220px,1fr));gap:20px;}
+        .member-card{position:relative;padding: 15px;border-radius: 10px;box-shadow: 0 2px 8px rgba(0,0,0,0.12);overflow: hidden;}
+        .card-brown{background: #AC8F6A;}
+        .card-pink{background: #F5C6D0;}
+        .card-gray{background: #E0E0E0;}
+        .card-red{background: #F28B82;}
+        .card-orange-green{background:linear-gradient(180deg, #fab957 0%,#eaf6b5 50%, #57df48 100%);}
+        .card-blue{background: #A7C7E7;}
+        .card-purple{background: #C9A0DC;}
+        .card-dark{background: #1a1a24;}
+        .card-dark h3{color:#e0f0ff}
+        .card-dark p{color:#d8e4f7}
+        .card-dark .card-label{color:#74c0f7}
+        .card-dark .fall-emoji{opacity:0.35}
+        .card-dark a{color:#74c0f7}
+        .card-green{background: #A8D5BA;}
+        .member-card img{width:100%;height:260px;object-fit:cover;border-radius:6px;}
+        .fall-emoji{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%;pointer-events:none;}
+        .fall-emoji span{position:absolute;animation:fall 12s linear infinite;opacity: 0;}
+        @keyframes fall {
+            0% {transform: translateY(-70px)rotate(0deg);opacity:0;}
+            12% {opacity:0.75;}
+            88% {opacity:0.75;}
+            100% {transform: translateY(480px)rotate(360deg);opacity:0;}
+        }
+        .card-label{font-weight:bold;color:#0a2463}
+        .member-card p{margin:6px 0;line-height:1.6;}
+        .member-card h3{margin:8px 0;color:#0a3cafe8;font-size:18px;font-weight:bold;}
+        @media (max-width: 600px) {
+            .fall-emoji{font-size:24px;}
+        }
+        .card-original{background: #f0f0f0 !important;overflow:visible !important;}
+        .card-original .fall-emoji{display:none !important;}
+        .card-original .card-label{font-weight:normal !important;color:#333 !important;}
+        .card-original h3{color: #333 !important;}
+        .card-original p{color:#333 !important;} 
+        /* 帅哥 */
+        .video-item{background:#0d6adbd5;padding:20px;border-radius:10px;margin:15px 0;box-shadow:0 2px 8px #ddd;}
+        .video-card{text-align:center;padding:15px}
+        .video-card a{display:inline-block;background:#00a1d6;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;margin-top:10px;}
+        .video-card a:hover{background:#0081ab;}
+        /* 底部 */
+        footer{text-align:center;padding:20px;background:#0a2463;color:#fff;font-size:14px;}
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+</head>
+<body>
+<!-- 导航 -->
+<nav>
+    <ul>
+        <li><a href="#home" >首页</a ></li>
+        <li><a href="#member">成员介绍</a ></li>
+        <li><a href="#video">颜值欣赏</a ></li>
+        <li><a href="#guide">入坑指南</a ></li>
+    </ul>
+</nav>
+<div class="music-block">
+    <div id="aplayer"></div>
+</div>
+<script>
+const ap = new APlayer({
+    container: document.getElementById('aplayer'),
+    theme: '#2d83de',
+    order: 'list',
+    audio: [
+        {
+            name: "笑い話",
+            artist: "SUPER★DRAGON",
+            url: "audio/funnystory.mp3",
+            cover: "img/funnystory.jpg"
+        },
+        {
+            name: "Concealer",
+            artist: "SUPER★DRAGON",
+            url: "audio/concealer.mp3",
+            cover: "img/concealer.jpg"
+        },
+        {
+            name: "NPC",
+            artist: "SUPER★DRAGON",
+            url: "audio/npc.mp3",
+            cover: "img/npc.jpg"
+        },
+        {
+            name: "Fingerprints",
+            artist: "SUPER★DRAGON",
+            url: "audio/fingerprints.mp3",
+            cover: "img/fingerprints.jpg"
+        },
+        {
+            name: "callmeasap",
+            artist: "SUPER★DRAGON",
+            url: "audio/callmeasap.mp3",
+            cover: "img/callmeasap.jpg"
+        }
+    ]
+});
+</script>
+<div class="container">
+    <!-- 首页 -->
+    <section id="home">
+        <h2>欢迎了解 SUPER★DRAGON </h2>
+        <p style="line-height:1.8;margin-bottom:20px;">
+成立于2015年9月27日，今年即将迎来结成的第11周年，11年来无成员变动。2024年3月签约PONY CANYON（波音佳丽唱片公司）主流出道。SUPER★DRAGON由九个团结友爱、看似可怕实则可爱、低调内敛但业务能力过硬的帅哥组成。作品自22年后基本由成员构思并作词作曲，团内的B-boxer和rapper都很拿得出手，爱听rap的一定不要错过。表演形式为唱跳分离（实则唱分离跳没分离hhh，看练习室就能感受到了）。粉丝名为21年定为Blue，团应援色蓝色，成员无代表色但有动物塑。
+        </p >
+        <p> </p >
+        <p>SUPER★DRAGON里都有哪些成员呢？</p>
+        <div class="video-card">
+            <p>👉五分钟带你了解SUPER★DRAGON</p >
+                <div style="width:100%; margin:20px 0;">
+                  <iframe 
+                  style="width:100%; aspect-ratio:16/9; border:none;"
+                  src="https://player.bilibili.com/player.html?isOutside=true&bvid=BV1fF6DYjEG6&autoplay=0&high_quality=1&as_wide=1"
+                  scrolling="no" 
+                  frameborder="0" 
+                  allowfullscreen="true"
+                  referrerpolicy="no-referrer">
+                  </iframe>
+                </div>
+            <a href="https://www.bilibili.com/video/BV1fF6DYjEG6" target="_blank">跳转小按钮</a >
+        </div>
+        <div class="video-card">
+            <p>👉练习室认人向</p >
+                <div style="width:100%; margin:20px 0;">
+                  <iframe 
+                  style="width:100%; aspect-ratio:16/9; border:none;"
+                  src="https://player.bilibili.com/player.html?isOutside=true&bvid=BV1dZ5C6pEvP&autoplay=0&high_quality=1&as_wide=1"
+                  scrolling="no" 
+                  frameborder="0" 
+                  allowfullscreen="true"
+                  referrerpolicy="no-referrer">
+                  </iframe>
+                </div>
+            <a href="https://www.bilibili.com/video/BV1dZ5C6pEvP" target="_blank">跳转小按钮</a >
+        </div>
+        <div class="video-card">
+            <p>👉Reach The Sky认人向</p >
+                <div style="width:100%; margin:20px 0;">
+                  <iframe 
+                  style="width:100%; aspect-ratio:16/9; border:none;"
+                  src="https://player.bilibili.com/player.html?isOutside=true&bvid=BV1EGW6ehEbE&autoplay=0&high_quality=1&as_wide=1"
+                  scrolling="no" 
+                  frameborder="0" 
+                  allowfullscreen="true"
+                  referrerpolicy="no-referrer">
+                  </iframe>
+                </div>
+            <a href="https://www.bilibili.com/video/BV1EGW6ehEbE" target="_blank">跳转小按钮</a >
+        </div>
+    </section>
+
+    <!-- 门把-->
+    <section id="member">
+        <h2>成员介绍（年龄顺序）</h2>
+        <div class="member-box">
+            <div class="member-card card-brown">
+                <div class="fall-emoji">
+                    <span
+                    style="left: 10%; animation-delay: 0s;">🐶</span>
+                    <span
+                    style="left: 30%; animation-delay: 2s;">🐶</span>
+                    <span
+                    style="left: 50%; animation-delay: 4s;">🐶</span>
+                    <span
+                    style="left: 70%; animation-delay: 1s;">🐶</span>
+                    <span
+                    style="left: 90%; animation-delay: 3s;">🐶</span>
+                    <span
+                    style="left: 10%; animation-delay: 5s;">🐶</span>
+                </div>
+                <div class="card-content">
+                  <img src="img/shimurareo.jpg" alt="reo">
+                  <h3>志村玲於reo</h3>
+                  <p><span class="card-label">动物塑:</span> 🐶狗狗</p >
+                  <p><span class="card-label">定位:</span> 核心超稳定舞担</p >
+                  <p><span class="card-label">生日:</span> 1999.01.29</p >
+                  <p><span class="card-label">身高:</span> 164.5</p >
+                  <p><span class="card-label">个人简介:</span> 团妈但团欺，名副其实的带大了团里的孩子们，但没有讨厌的大人架子，特别温柔。舞蹈非常厉害，核心力量超强，是舞蹈队长，擅长料理，痴迷红茶，对红茶的了解已经完全称得上专业。喜欢玩游戏，最近开设了游戏直播栏目おれはれお（我是reo），感兴趣可以在B站搜索相关物料。</p >
+                </div>
+            </div>
+            <div class="member-card card-pink">
+                <div class="fall-emoji">
+                    <span
+                    style="left: 10%; animation-delay: 0s;">🦁</span>
+                    <span
+                    style="left: 30%; animation-delay: 2s;">🦁</span>
+                    <span
+                    style="left: 50%; animation-delay: 4s;">🦁</span>
+                    <span
+                    style="left: 70%; animation-delay: 1s;">🦁</span>
+                    <span
+                    style="left: 90%; animation-delay: 3s;">🦁</span>
+                    <span
+                    style="left: 10%; animation-delay: 5s;">🦁</span>
+                </div>
+                <div class="card-content">
+                  <img src="img/furukawatsuyoshi.jpg" alt="tsuyoshi">
+                  <h3>古川毅tsuyoshi</h3>
+                  <p><span class="card-label">动物塑:</span> 🦁狮子</p >
+                  <p><span class="card-label">定位:</span> 音色非常独特的vocal</p >
+                  <p><span class="card-label">生日:</span> 2000.02.27</p >
+                  <p><span class="card-label">身高:</span> 185+(具体多高实在无从考证但绝对超过官方数据182)</p >
+                  <p><span class="card-label">个人简介:</span> 天然呆帅哥，如果看过《三年a班》也许会对这位帅哥有印象，音色也帅。超级潮男，对时尚很有研究，会设计演出服装，会作词作曲。非常成熟靠谱，但脾气很好，个人觉得是团队主心骨般的存在，是会为了让团变得更好而想很多的人。</p >
+                </div>
+            </div>
+            <div class="member-card card-gray">
+                <div class="fall-emoji">
+                    <span
+                    style="left: 10%; animation-delay: 0s;">🐰</span>
+                    <span
+                    style="left: 30%; animation-delay: 2s;">🐰</span>
+                    <span
+                    style="left: 50%; animation-delay: 4s;">🐰</span>
+                    <span
+                    style="left: 70%; animation-delay: 1s;">🐰</span>
+                    <span
+                    style="left: 90%; animation-delay: 3s;">🐰</span>
+                    <span
+                    style="left: 10%; animation-delay: 5s;">🐰</span>
+                </div>
+                <div class="card-content">
+                  <img src="img/jeankaido.jpg" alt="jean">
+                  <h3>ジャン海渡jean</h3>
+                  <p><span class="card-label">动物塑:</span> 🐰兔子</p >
+                  <p><span class="card-label">定位:</span> vocal&rap担</p >
+                  <p><span class="card-label">生日:</span> 2000.05.04</p >
+                  <p><span class="card-label">身高:</span> 181</p >
+                  <p><span class="card-label">个人简介:</span> 土耳其混血！可以叫他酱，团内许多歌他都参与了作词作曲，也会作为独立音乐人Jjean发布自己的原创，风格偏电子，但是听起来很舒服，不禁让人感叹他简直是天才啊！造梗能手，很有综艺效果，盘靓条顺，4个月大就已登上杂志封面，童星来的，虽然是vo组但舞蹈也很好，喜欢全能型的有福了。</p >
+                </div>
+            </div>
+            <div class="member-card card-red">
+                <div class="fall-emoji">
+                    <span
+                    style="left: 10%; animation-delay: 0s;">🐻</span>
+                    <span
+                    style="left: 30%; animation-delay: 2s;">🐻</span>
+                    <span
+                    style="left: 50%; animation-delay: 4s;">🐻</span>
+                    <span
+                    style="left: 70%; animation-delay: 1s;">🐻</span>
+                    <span
+                    style="left: 90%; animation-delay: 3s;">🐻</span>
+                    <span
+                    style="left: 10%; animation-delay: 5s;">🐻</span>
+                </div>
+                <div class="card-content">
+                  <img src="img/iijimahayate.jpg" alt="Hayate">
+                  <h3>饭岛飒Hayate</h3>
+                  <p><span class="card-label">动物塑:</span> 🐻熊</p >
+                  <p><span class="card-label">定位:</span> 大框架舞担</p >
+                  <p><span class="card-label">生日:</span> 2001.10.12</p >
+                  <p><span class="card-label">身高:</span> 182.2</p >
+                  <p><span class="card-label">个人简介:</span> 热爱足球，正宗猫奴，超级喜欢吃冰淇淋！会进行刨冰巡礼，好可爱吧。电波系（指不按常理出牌），对待一切事物都非常认真，但又有些调皮，反差感十足，学历很高（青山学院大学），记忆力很强，种种叠加被队友认证为psychopath（褒义的？神经病，我理解为一种天才病），大学生+1。</p >
+                </div>
+            </div>
+            <div class="member-card card-orange-green">
+                <div class="fall-emoji">
+                    <span
+                    style="left: 10%; animation-delay: 0s;">🐼</span>
+                    <span
+                    style="left: 30%; animation-delay: 2s;">🐼</span>
+                    <span
+                    style="left: 50%; animation-delay: 4s;">🐼</span>
+                    <span
+                    style="left: 70%; animation-delay: 1s;">🐼</span>
+                    <span
+                    style="left: 90%; animation-delay: 3s;">🐼</span>
+                    <span
+                    style="left: 10%; animation-delay: 5s;">🐼</span>
+                </div>
+                <div class="card-content">
+                  <img src="img/itousougo.jpg" alt="sougo">
+                  <h3>伊藤壮吾sougo</h3>
+                  <p><span class="card-label">动物塑:</span> 🐼熊猫</p >
+                  <p><span class="card-label">身高:</span> 171</p >
+                  <p><span class="card-label">定位:</span> 小个子热血舞担</p >
+                  <p><span class="card-label">生日:</span> 2003.02.17</p >
+                  <p><span class="card-label">个人简介:</span> 是不折不扣的铁道宅（此人设十分稀有），十年如一日热爱电车，单纯善良，物欲极低，人生是由50%的电车和50%的超级龙组成，会对喜欢的东西非常执着（例如电车和超级龙），有点急性子。还会弹钢琴哦！完全宝藏男孩，队友评价他是“还没有被挖掘到的钻石”，大学生+2。</p >
+                </div>
+            </div>
+            <div class="member-card card-blue">
+                <div class="fall-emoji">
+                    <span
+                    style="left: 10%; animation-delay: 0s;">🐹</span>
+                    <span
+                    style="left: 30%; animation-delay: 2s;">🐹</span>
+                    <span
+                    style="left: 50%; animation-delay: 4s;">🐹</span>
+                    <span
+                    style="left: 70%; animation-delay: 1s;">🐹</span>
+                    <span
+                    style="left: 90%; animation-delay: 3s;">🐹</span>
+                    <span
+                    style="left: 10%; animation-delay: 5s;">🐹</span>
+                </div>
+                <div class="card-content">
+                  <img src="img/tanakakoki.jpg" alt="koki">
+                  <h3>田中洸希koki</h3>
+                  <p><span class="card-label">动物塑:</span> 🐹仓鼠</p >
+                  <p><span class="card-label">身高:</span> 173</p >
+                  <p><span class="card-label">定位:</span> vocal/Bbox/rap都来</p >
+                  <p><span class="card-label">生日:</span> 2003.02.27</p >
+                  <p><span class="card-label">个人简介:</span> 声音大胆子小，完全是胆小如鼠的具象化。长了一张萌脸但其实是个低音炮，很会Bbox，参加过beatbox比赛，团曲里的Bbox部分完全可以作为killing part，听起来很爽，推荐Omaejanai和So woo。虽然是低音炮但其实音域很宽，假声、转音什么的统统拿下。喜欢把自己打扮的漂漂亮亮的，精致男孩一枚。</p >
+                </div>
+            </div>
+            <div class="member-card card-purple">
+                <div class="fall-emoji">
+                    <span
+                    style="left: 10%; animation-delay: 0s;">🐨</span>
+                    <span
+                    style="left: 30%; animation-delay: 2s;">🐨</span>
+                    <span
+                    style="left: 50%; animation-delay: 4s;">🐨</span>
+                    <span
+                    style="left: 70%; animation-delay: 1s;">🐨</span>
+                    <span
+                    style="left: 90%; animation-delay: 3s;">🐨</span>
+                    <span
+                    style="left: 10%; animation-delay: 5s;">🐨</span>
+                </div>
+                <div class="card-content">
+                  <img src="img/ikedahyoma.jpg" alt="hyoma">
+                  <h3>池田彪马hyoma</h3>
+                  <p><span class="card-label">动物塑:</span> 🐨考拉</p >
+                  <p><span class="card-label">身高:</span> 180</p >
+                  <p><span class="card-label">定位:</span> 纯正vocal</p >
+                  <p><span class="card-label">生日:</span> 2003.06.02</p >
+                  <p><span class="card-label">个人简介:</span> 超爱吃肉，最强大脑，毕业于日本庆应义塾大学心理学系（也是很牛的一位，有望竞争爱豆学历高峰），聪明强大但傲娇。作为主唱非常稳，同时舞蹈也很强，身体灵活柔软，有不达目标不罢休的超强毅力做什么都会成功的，慕强批有福了，大学生+3。</p >
+                </div>
+            </div>
+            <div class="member-card card-dark">
+                <div class="fall-emoji">
+                    <span
+                    style="left: 10%; animation-delay: 0s;">🐧</span>
+                    <span
+                    style="left: 30%; animation-delay: 2s;">🐧</span>
+                    <span
+                    style="left: 50%; animation-delay: 4s;">🐧</span>
+                    <span
+                    style="left: 70%; animation-delay: 1s;">🐧</span>
+                    <span
+                    style="left: 90%; animation-delay: 3s;">🐧</span>
+                    <span
+                    style="left: 10%; animation-delay: 5s;">🐧</span>
+                </div>
+                <div class="card-content">
+                  <img src="img/matsumuratomoya.jpg" alt="tomoya">
+                  <h3>松村和哉tomoya</h3>
+                  <p><span class="card-label">动物塑:</span> 🐧企鹅</p >
+                  <p><span class="card-label">身高:</span> 171</p >
+                  <p><span class="card-label">定位:</span> 纯正rap担</p >
+                  <p><span class="card-label">生日:</span> 2004.04.15</p >
+                  <p><span class="card-label">个人简介:</span> 年龄小但是思想异常成熟，rap词坚持自作，语言表达能力极强，很会吐槽但心思细腻，刀子嘴豆腐心。24年以rapper身份solo出道，名为cuegee，现场很强，rap作品很好听，推荐Straight up和Time won't wait. 作为爱豆兼rapper有着打破rapper界地上以及地下对彼此偏见的宏伟理想！皮囊帅气灵魂也很有趣的一位。</p >
+                </div>
+            </div>
+            <div class="member-card card-green">
+                <div class="fall-emoji">
+                    <span
+                    style="left: 10%; animation-delay: 0s;">🐱</span>
+                    <span
+                    style="left: 30%; animation-delay: 2s;">🐱</span>
+                    <span
+                    style="left: 50%; animation-delay: 4s;">🐱</span>
+                    <span
+                    style="left: 70%; animation-delay: 1s;">🐱</span>
+                    <span
+                    style="left: 90%; animation-delay: 3s;">🐱</span>
+                    <span
+                    style="left: 10%; animation-delay: 5s;">🐱</span>
+                </div>
+                <div class="card-content">
+                  <img src="img/shibazakiraku.jpg" alt="raku">
+                  <h3>柴崎楽raku</h3>
+                  <p><span class="card-label">动物塑:</span> 🐱猫猫</p >
+                  <p><span class="card-label">身高:</span> 176</p >
+                  <p><span class="card-label">定位:</span> 柔软舞担+可爱担当</p >
+                  <p><span class="card-label">生日:</span> 2004.04.28</p >
+                  <p><span class="card-label">个人简介:</span> 小时候完全小女孩，是以女孩子的身份被星探挖掘的！本体是猫猫，特别特别萌，很会穿搭，最被大家宠爱的末子，会摄影，还会画画，画非常有自己的风格，愿称之为艺术家...还很会做料理，话不多但非常靠谱，会设计巡演周边，散发着一种淡淡的就会顺顺的感觉，大学生+4</p >
+                </div>
+            </div>
+            <div class="member-card card-original">
+                <img src="img/fire.jpg" alt="火龙组">
+                <h3>火龙组Fire Dragon</h3>
+                <p>由四个年上大哥哥组成（左☞右：古川毅tsuyoshi、饭岛飒Hayate、志村玲於reo、酱海渡jean）</p >
+                <p>年上感十足，是靠谱的大哥哥们，作品风格偏向成男风味，推荐Good Times&Tan Lines，这首很美味，早期作品推荐ARIGATO，四个人都有唱，听得人心暖暖的。</p >
+                <p>点击即可收听哦！</p >
+                <p>网易云链接:</p >
+                    <p><a href="https://y.music.163.com/m/song?id=2709756659&userid=489116271&dlt=0846" target="_blank">Good Times&Tan Lines</a ></p >
+                    <p><a href="https://y.music.163.com/m/song?id=458711251&userid=489116271&dlt=0846" target="_blank">ARIGATO</a ></p >
+                <p>QQ音乐链接:</p >
+                    <p><a href="https://c6.y.qq.com/base/fcgi-bin/u?__=MhD5xM709oJs" target="_blank">Good Times&Tan Lines</a ></p >
+                    <p><a href="https://c6.y.qq.com/base/fcgi-bin/u?__=0DWfx77096eN " target="_blank">ARIGATO</a ></p >
+            </div>
+            <div class="member-card card-original">
+                <img src="img/thunder2.jpg" alt="雷龙组">
+                <h3>雷龙组Thunder Dragon</h3>
+                <p>由五个年下弟弟们组成（左☞右：上排伊藤壮吾sougo、松村和哉tomoya；下排田中洸希koki、柴崎楽raku、池田彪马hyoma）</p >
+                <p>简介:15年出道最小的孩子只有11岁，所以小时候孩子们唱歌都是童声，GETSUYOUBI这首就是五个孩子在唱歌呀；Athena是由成员松村和哉tomoya作词的，很会写词的一位。</p >
+            <p>网易云链接:</p >
+                    <p><a href="https://y.music.163.com/m/song?id=458711249&userid=489116271&dlt=0846" target="_blank">GETSUYOUBI</a ></p >
+                    <p><a href="https://y.music.163.com/m/song?id=2709759275&userid=489116271&dlt=0846" target="_blank">Athena</a ></p >
+                <p>QQ音乐链接:</p >
+                    <p><a href="https://c6.y.qq.com/base/fcgi-bin/u?__=STlvjo909LC1" target="_blank">GETSUYOUBI</a ></p >
+                    <p><a href="https://c6.y.qq.com/base/fcgi-bin/u?__=ARmPg27096Jc" target="_blank">Athena</a ></p >
+            </div>
+            <div class="member-card card-original">
+                <img src="img/jinzhao.jpg" alt="近照">
+                <h3>九条龙🐉</h3>
+                <p>这里放置同担老师整理的歌单（ps：QQ音乐里有部分练习室、MV、live和vo组翻唱视频，想看更多需要移步B站）</p >
+                <p>再啰嗦一点点，其实显而易见，超级龙还可以分为voice组和dance组，dance组也有专属音乐，非常洗脑的两首，是由vo组为他们创作的，叫SAWAGE!!!!(还有没上线的NEBOU)</p>
+                <p>而vo组也可以继续划分为纯vo和rap line，喜欢听说唱的可以听DOG和2U，很神的两首。</p>
+                <p><a href="https://music.163.com/m/playlist?id=9699697329&creatorId=75656041&uiPlaylistType=UGC" target="_blank">网易云合集</a ></p >
+                <p><a href="https://i2.y.qq.com/n3/other/pages/details/playlist.html?id=9176284202&hosteuin=" target="_blank">QQ音乐合集</a ></p >
+            </div>
+        </div>
+    </section>
+
+    <!-- 颜值这块 -->
+    <section id="video">
+        <h2>颜值欣赏（人活着就是要看帅哥的呀）</h2>
+        <div class="video-item">
+            <h3>田中洸希</h3>
+            <div style="width:100%; margin:20px 0;">
+                  <iframe 
+                  style="width:100%; aspect-ratio:16/9; border:none;"
+                  src="https://player.bilibili.com/player.html?isOutside=true&bvid=BV1dk2kYTEuT&autoplay=0&high_quality=1&as_wide=1"
+                  scrolling="no" 
+                  frameborder="0" 
+                  allowfullscreen="true"
+                  referrerpolicy="no-referrer">
+                  </iframe>
+            </div>
+            <div class="video-card">
+                <a href="https://www.bilibili.com/video/BV1dk2kYTEuT" target="_blank">点击前往B站欣赏高清版</a >
+            </div>
+            <h3>古川毅</h3>
+            <div style="width:100%; margin:20px 0;">
+                  <iframe 
+                  style="width:100%; aspect-ratio:16/9; border:none;"
+                  src="https://player.bilibili.com/player.html?isOutside=true&bvid=BV1Rc411y7QA&autoplay=0&high_quality=1&as_wide=1"
+                  scrolling="no" 
+                  frameborder="0" 
+                  allowfullscreen="true"
+                  referrerpolicy="no-referrer">
+                  </iframe>
+            </div>
+            <div class="video-card">
+                <a href="https://www.bilibili.com/video/BV1Rc411y7QA" target="_blank">点击前往B站欣赏高清版</a >
+            </div>
+        </div>
+    </section>
+
+    <!-- 入坑指南 -->
+    <section id="guide">
+        <h2>只是搜集一些老师们制作的合集</h2>
+        <ol style="padding-left:20px;line-height:1.8;">
+            <li>可以先看一看近两年的舞台，最近真的越来越稳</li>
+            <p>tips：超级龙的live一般包括每年不同主题的live tour、dra fes（超级龙的音乐节简称：龙乐节），还有release event也就是新专辑发布活动，又称为丽丽一杯，以及一些音乐活动的出场</p>
+            <p>2026.07.16</p>
+            <p><a href="https://www.bilibili.com/video/BV15jKG6kEmB" target="_blank">「Call Me Asap / NUMBER」発売記念リリースイベント@川崎CLUB CITTA YouTube生配信！</a ></p>
+            <p>2026.04.11</p>
+            <p><a href="https://www.bilibili.com/video/BV16hTy6LExG" target="_blank">マイナビ presents The Performance拼盘演唱会SUPER★DRAGON部分（地上波）</a ></p>
+            <p>2026.04.19</p>
+            <p><a href="https://www.bilibili.com/video/BV1NaoFBDEwh" target="_blank">SUPER★DRAGON LIVE TOUR 2026「Studio」</a ></p>
+            <p>2025.09.27超级龙十周年</p>
+            <p><a href="https://www.bilibili.com/video/BV1wgxHzjEUn" target="_blank">SUPER★DRAGON LIVE TOUR 2025「SUPER X」</a ></p>
+            <p>一定要看的十周年专辑诞生记录（不是live但想让大家看所以放进来了）</p>
+            <p><a href="https://www.bilibili.com/video/BV1toTxzREeM" target="_blank">'SUPER X' Documentary </a ></p>
+            <P>2024.07.13</P>
+            <p><a href="https://www.bilibili.com/video/BV1aS411c7rs" target="_blank">luckyfes24-SUPER★DRAGON</a ></p>
+
+
+            <li>推荐观看B站老师剪的舞蹈练习室认人视频以及一些mv</li>
+            <p><a href="https://www.bilibili.com/video/BV17ya8z2E1b/?spm_id_from=333.1387.collection.video_card.click&vd_source=269437fa991090b791d249b4e70ec920" target="_blank">练习室合集</a ></p> 
+            <p><a href="https://www.bilibili.com/video/BV1QX4m6xEJq/?spm_id_from=333.788.videopod.episodes&vd_source=269437fa991090b791d249b4e70ec920&p=49" target="_blank">MV合集</a ></p>
+            <li>团综&冠番</li>
+            <p><a href="https://space.bilibili.com/284557884/lists/8555018?type=season" target="_blank">今年的新物料中字版</a ></p>
+            <p><a href="https://space.bilibili.com/284557884/lists/XXXXXXXX" target="_blank">スパドラTV（）</a ></p>
+            <li>考古采访物料</li>
+            <p><a href="https://space.bilibili.com/1059967523/favlist?fid=4069523823&ftype=create" target="_blank">25年的100问100答</a ></p>
+            <li>如果有幸安利到想了解更多的话</li>
+            <p>推荐一些小红书博主：超级朵拉再火一点吧（剪辑）、狐の呓语和苹果汁煎枇杷（实用教程）、游师傅的烤鱼铺和九.H（考古幼龙）</p>
+        </ol>
+    </section>
+</div>
+
+<footer>
+    自制 for SUPER★DRAGON 会及时更新的
+</footer>
+</body>
+</html>
