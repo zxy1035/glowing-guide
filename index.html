@@ -38,28 +38,7 @@
             }
         nav a{color: #2d4ede;text-decoration: none;font-family: "微软雅黑",sans-serif;font-weight: bolder;font-size: 16px;padding:12px 6px;}
         nav a:hover{color: #82b1ff;}
-        /* 音乐播放器 */
-        .music-block{
-            margin:16px 20px;
-            max-width:620px;
-            padding:10px 14px;
-            background:rgba(255,255,255,0.32);
-            backdrop-filter: blur(6px);
-            border-radius:12px;
-            }
-        .music-block .aplayer {border-radius:8px;height:70px;}
-        .music-block .aplayer .aplayer-pic {border-radius:6px;width:50px;height:50px;}
-        .music-block .aplayer .aplayer-info {margin-left:60px;}
-        .aplayer .aplayer-info .aplayer-music {font-size:14px;}
-        .aplayer .aplayer-info .aplayer-author {font-size:12px;opacity:0.8;}
-        :root {
-            --aplayer-theme-color: #2d83de;
-        }
-        @media (max-width: 600px) {
-        .music-block{ max-width:calc(100% - 20px); margin:12px 10px;}
-        .music-block .aplayer {height:62px;}
-        .music-block .aplayer .aplayer-pic {width:42px;height:42px;}
-        }
+        
         /* 容器统一宽度 */
         .container{max-width: 1200px;margin: 0 auto;padding: 20px;}
         section{margin: 40px 0;}
@@ -108,9 +87,27 @@
         .video-card a:hover{background:#0081ab;}
         /* 底部 */
         footer{text-align:center;padding:20px;background:#0a2463;color:#fff;font-size:14px;}
+        .music-wrap{
+        width:100%;
+        background:rgba(255,255,255,0.15);
+        backdrop-filter:blur(8px);
+        border-radius:8px;
+        margin:12px 0;
+        padding:10px;
+        }
+        /* 音乐播放器样式 */
+        .music-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+        .music-cover{width:52px;height:52px;object-fit:cover;border-radius:4px;}
+        .music-info{min-width:140px;}
+        .music-name{font-size:16px;color:#fff;}
+        .music-artist{font-size:13px;color:#ddd;}
+        .music-control button{border:none;background:#2d83de;color:white;padding:4px 10px;border-radius:4px;margin:0 2px;cursor:pointer;}
+        .progress-wrap{flex:1;}
+        #progressBar{width:100%;}
+        .music-list{margin-top:8px;max-height:180px;overflow-y:auto;}
+        .music-item{color:#fff;padding:6px 8px;cursor:pointer;font-size:14px;}
+        .music-item.active{background:rgba(45,131,222,0.4);}
     </style>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
 </head>
 <body>
 <!-- 导航 -->
@@ -122,19 +119,28 @@
         <li><a href="#guide">入坑指南</a ></li>
     </ul>
 </nav>
-<div class="music-block">
-    <div id="aplayer"></div>
+<div class="music-wrap">
+    <div class="music-bar">
+        < img class="music-cover" id="musicCover" src="img/funnystory.jpg">
+        <div class="music-info">
+            <div class="music-name" id="musicName">笑い話</div>
+            <div class="music-artist" id="musicArtist">SUPER★DRAGON</div>
+        </div>
+        <div class="music-control">
+            <button onclick="prevSong()">上一首</button>
+            <button onclick="togglePlay()">播放 / 暂停</button>
+            <button onclick="nextSong()">下一首</button>
+        </div>
+        <div class="progress-wrap">
+            <input type="range" id="progressBar" value="0" min="0" max="100">
+        </div>
+    </div>
+    <div class="music-list" id="musicList"></div>
+    <audio id="audioPlayer">
 </div>
+    
 <script>
-const ap = new APlayer({
-    container: document.getElementById('aplayer'),
-    theme: '#2d83de',
-    order: 'list',
-    loop:'all',
-    preload:'none',
-    listFolded:false,
-    listMaxHeight:220,
-    audio: [
+const songData = [
         {
             name: "笑い話",
             artist: "SUPER★DRAGON",
@@ -147,6 +153,7 @@ const ap = new APlayer({
             url: "audio/concealer.mp3",
             cover: "img/concealer.jpg"
         },
+
         {
             name: "NPC",
             artist: "SUPER★DRAGON",
@@ -165,8 +172,70 @@ const ap = new APlayer({
             url: "audio/callmeasap.mp3",
             cover: "img/callmeasap.jpg"
         }
-    ]
-});
+    ];
+    let current = 0;
+    const audio = document.getElementById('audioPlayer');
+    const coverImg = document.getElementById('musicCover');
+    const nameDom = document.getElementById('musicName');
+    const artistDom = document.getElementById('musicArtist');
+    const listDom = document.getElementById('musicList');
+    const progressBar = document.getElementById('progressBar');
+
+function renderList(){
+    listDom.innerHTML = '';
+    songData.forEach((s,idx)=>{
+        const div = document.createElement('div');
+        div.className = "music-item" + (idx === current ? " active":"");
+        div.innerText = `${s.name} — ${s.artist}`;
+        div.onclick = ()=>{ playIndex(idx); };
+        listDom.appendChild(div);
+    })
+}
+
+function loadSong(idx){
+    current = idx;
+    const s = songData[current];
+    audio.src = s.url;
+    coverImg.src = s.cover;
+    nameDom.innerText = s.name;
+    artistDom.innerText = s.artist;
+    renderList();
+}
+
+function playIndex(idx){
+    loadSong(idx);
+    audio.play();
+}
+
+function togglePlay(){
+    if(audio.paused) audio.play();
+    else audio.pause();
+}
+
+function nextSong(){
+    current = (current + 1) % songData.length;
+    loadSong(current);
+    audio.play();
+}
+
+function prevSong(){
+    current = (current -1 + songData.length) % songData.length;
+    loadSong(current);
+    audio.play();
+}
+
+audio.addEventListener('timeupdate',()=>{
+    if(audio.duration){
+        progressBar.value = (audio.currentTime / audio.duration)*100;
+    }
+})
+progressBar.oninput = ()=>{
+    audio.currentTime = (progressBar.value /100) * audio.duration;
+}
+
+audio.addEventListener('ended',nextSong);
+
+loadSong(0);
 </script>
 <div class="container">
     <!-- 首页 -->
