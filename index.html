@@ -52,7 +52,7 @@
             position: absolute;
             top:62px;
             left:14px;
-            width: 240px;
+            width: 200px;
             background:rgba(215,232,253,0.72);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
@@ -64,7 +64,7 @@
             gap: 10px;
         }
         .top-dropdown.open{display: flex;}
-        .top-dropdown.a{
+        .top-dropdown a{
             color: #243b58;
             text-decoration: none;
             padding: 14px 18px;
@@ -78,6 +78,7 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 9px rgba(100,150,205,0.28);
             background: #ffffff;
+            text-decoration: none;
         }
         .page-content{
             margin: 0 auto;
@@ -166,11 +167,11 @@
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             color:#243b58;
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius:50%;
             cursor:pointer;
-            font-size:18px;
+            font-size:16px;
             transform: 0.2s;
         }
         .music-control button:hover{
@@ -212,9 +213,9 @@
                <div class="music-artist" id="musicArtist">SUPER★DRAGON</div>
             </div>
             <div class="music-control">
-                <button onclick="prevSong()">⏮️</button>
-                <button onclick="togglePlay()">▶️</button>
-                <button onclick="nextSong()">⏭️</button>
+                <button onclick="prevSong()">⏮</button>
+                <button onclick="togglePlay()">▶</button>
+                <button onclick="nextSong()">⏭</button>
                 <button onclick="toggleMusicList()">☰</button>
             </div>
             <div class="progress-wrap">
