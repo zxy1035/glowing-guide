@@ -145,14 +145,16 @@
             background: rgba(95, 147, 252, 0.85);
             backdrop-filter:blur(8px);
             padding:8px 14px;
+            box-sizing:border-box;
         }
         .music-bar{
             display:flex;
             align-items:center;
             gap:16px;
             flex-wrap:nowrap;
+            margin-bottom:6px;
         }
-        .music-cover{width:36px;height:36px;object-fit:cover;border-radius:3px;}
+        .music-cover{width:40px;height:40px;object-fit:cover;border-radius:4px;}
         .music-info{min-width:80px;flex-shrink: 1;}
         .music-name{font-size:13px;color:#fff;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
         .music-artist{font-size:13px;color:#ddd;}
@@ -160,6 +162,7 @@
             display: flex;
             gap:10px;
             align-items: center;
+            margin-left:auto;
         }
         .music-control button{
             border:none;
@@ -167,18 +170,22 @@
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             color:#243b58;
-            width: 36px;
-            height: 36px;
+            width: 26px;
+            height: 26px;
             border-radius:50%;
             cursor:pointer;
-            font-size:16px;
+            font-size:13px;
             transform: 0.2s;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:0;
         }
         .music-control button:hover{
             background: #fff;
             transform: translateY(-1px);
         }
-        .progress-wrap{flex:1;}
+        .progress-wrap{width:100%;}
         #progressBar{width:100%;}
         .music-list{
             max-height:0;
@@ -702,7 +709,7 @@
             <li>采访物料</li>
             <p><a href="https://www.bilibili.com/list/ml4069523823?spm_id_from=333.1387.0.0&oid=114976626901312&bvid=BV1814RzsEc2" target="_blank">25年的100问100答</a ></p>
             <li>如果有幸成功安利到，想了解更多的话</li>
-            <p>推荐一些小红书博主：狐の呓语和苹果汁煎枇杷（一些入坑实用教程）、游师傅的烤鱼铺和九.H（考古幼龙）</p>
+            <p>推荐关注一些小红书的老师：狐の呓语和苹果汁煎枇杷（一些入坑实用教程）、游师傅的烤鱼铺和九.H（考古幼龙）</p>
         </ol>
     </section>
 </div>
